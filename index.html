@@ -20,7 +20,8 @@ main{max-width:1120px;margin:28px auto;padding:0 18px 35px}
 .panel h2,.preview-card h2{font-size:16px;margin:0 0 5px}
 .sub{font-size:12px;color:var(--muted);margin:0 0 16px}
 label{display:block;font-size:12px;font-weight:700;color:#555047;margin:12px 0 5px}
-input,select{width:100%;padding:10px 11px;border:1px solid #dcd6ca;border-radius:7px;font:14px Arial;background:#fff;color:#222;outline-color:var(--gold)}\n.fixed-field{width:100%;padding:10px 11px;border:1px solid #dcd6ca;border-radius:7px;font:14px Arial;background:#f6f4f0;color:#555;cursor:not-allowed}
+input,select{width:100%;padding:10px 11px;border:1px solid #dcd6ca;border-radius:7px;font:14px Arial;background:#fff;color:#222;outline-color:var(--gold)}
+.fixed-field{width:100%;padding:10px 11px;border:1px solid #dcd6ca;border-radius:7px;font:14px Arial;background:#f6f4f0;color:#555;cursor:not-allowed}
 input:focus,select:focus{border-color:var(--gold)}
 .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:17px}
 button{border:0;border-radius:7px;padding:11px 13px;font-size:13px;font-weight:700;cursor:pointer}
@@ -59,9 +60,9 @@ button{border:0;border-radius:7px;padding:11px 13px;font-size:13px;font-weight:7
 <label for="role">Service / Fonction</label><input id="role" value="Service Commercial">
 <label>Téléphone fix </label><div class="fixed-field">(+216) 71 900 555 </div>
 <label for="phone">Téléphone</label><input id="phone" value="(+216) 29 747 150" autocomplete="tel">
-<label for="address">Adresse professionnelle</label><input id="address" value="4, Rue Ibn Nadim – 1073 Montplaisir, Tunis – Tunisie">
+<label>Adresse professionnelle</label><div class="fixed-field">4, Rue Ibn Nadim – 1073 Montplaisir, Tunis – Tunisie</div>
 <label for="email">E-mail professionnel</label><input id="email" type="email" value="resa@businesshoteltunis.com" autocomplete="email">
-<label for="website">Site web</label><input id="website" value="www.businesshoteltunis.com">
+<label>Site web</label><div class="fixed-field">www.businesshoteltunis.com</div>
 <label for="greeting">Formule de politesse</label><select id="greeting"><option>Cordialement / Best regards,</option><option>Cordialement,</option><option>Best regards,</option></select>
 <div class="actions"><button class="primary" id="copyBtn">Copier ma signature</button><button class="secondary" id="selectBtn">Sélectionner</button></div>
 <div class="status" id="status" aria-live="polite"></div>
@@ -79,7 +80,7 @@ button{border:0;border-radius:7px;padding:11px 13px;font-size:13px;font-weight:7
 <p class="job" id="v-role">Service Commercial</p>
 <p class="contact">
 <span class="contact-row"><span class="contact-icon">T</span><span id="v-phone">(+216) 29 747 150</span></span>
-<span class="contact-row"><span class="contact-icon">FIX</span><span id="v-fix">(+216) 71 900 655</span></span>
+<span class="contact-row"><span class="contact-icon">FIX</span><span id="v-fix">(+216) 71 900 555</span></span>
 <span class="contact-row"><span class="contact-icon">A</span><span id="v-address">4, Rue Ibn Nadim – 1073 Montplaisir, Tunis – Tunisie</span></span>
 <span class="contact-row"><span class="contact-icon">@</span><a id="v-email" href="mailto:resa@businesshoteltunis.com">resa@businesshoteltunis.com</a></span>
 <span class="contact-row"><span class="contact-icon">W</span><a id="v-website" href="https://www.businesshoteltunis.com/">www.businesshoteltunis.com</a></span>
@@ -94,16 +95,16 @@ button{border:0;border-radius:7px;padding:11px 13px;font-size:13px;font-weight:7
 </div>
 </main>
 <script>
-const ids=['name','role','phone','address','email','website','greeting'];
+const ids=['name','role','phone','email','greeting'];
 const $=id=>document.getElementById(id);
 function update(){
  $('v-greeting').textContent=$('greeting').value;
  $('v-name').textContent=$('name').value.trim()||'Nom et prénom';
  $('v-role').textContent=$('role').value.trim()||'Service / Fonction';
  $('v-phone').textContent=$('phone').value.trim()||'Téléphone';
- $('v-address').textContent=$('address').value.trim();
+ $('v-address').textContent='4, Rue Ibn Nadim – 1073 Montplaisir, Tunis – Tunisie';
  const email=$('email').value.trim();$('v-email').textContent=email;$('v-email').href=email?'mailto:'+email:'#';
- let site=$('website').value.trim();$('v-website').textContent=site;$('v-website').href=site?(site.match(/^https?:\/\//)?site:'https://'+site):'#';
+ const site='www.businesshoteltunis.com';$('v-website').textContent=site;$('v-website').href='https://www.businesshoteltunis.com/';
 }
 ids.forEach(id=>$(id).addEventListener('input',update));
 function getSignatureHTML(){
