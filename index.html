@@ -40,7 +40,7 @@ button{border:0;border-radius:7px;padding:11px 13px;font-size:13px;font-weight:7
 .job{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#a8864b;margin:0 0 13px}
 .contact{font-size:12px;line-height:1.75;margin:0;overflow-wrap:anywhere}
 .contact-row{display:block}
-.contact-icon{display:inline-block;width:19px;color:#a8864b;font-weight:700}
+.contact-icon{display:inline-block;width:72px;color:#a8864b;font-weight:700}
 .contact a{color:#7d6337;text-decoration:none}
 .sig-bottom{margin-top:17px;padding-top:10px;border-top:1px solid #c9b184;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;text-align:center;font-size:9px;letter-spacing:1.7px;color:#4e4a43}
 .sig-bottom .dot{color:#a8864b;font-size:13px}
@@ -79,11 +79,11 @@ button{border:0;border-radius:7px;padding:11px 13px;font-size:13px;font-weight:7
 <p class="person" id="v-name">BOUNASRI Azza</p>
 <p class="job" id="v-role">Service Commercial</p>
 <p class="contact">
-<span class="contact-row"><span class="contact-icon">Tel</span><span id="v-phone">(+216) 29 747 150</span></span>
-<span class="contact-row"><span class="contact-icon">FIX</span><span id="v-fix">(+216) 71 900 555</span></span>
-<span class="contact-row"><span class="contact-icon">Adresse</span><span id="v-address">4, Rue Ibn Nadim – 1073 Montplaisir, Tunis – Tunisie</span></span>
-<span class="contact-row"><span class="contact-icon">Email</span><a id="v-email" href="mailto:resa@businesshoteltunis.com">resa@businesshoteltunis.com</a></span>
-<span class="contact-row"><span class="contact-icon">site web</span><a id="v-website" href="https://www.businesshoteltunis.com/">www.businesshoteltunis.com</a></span>
+<span class="contact-row"><span class="contact-icon" style="display:inline-block;width:72px;color:#a8864b;font-weight:700">Tél</span><span id="v-phone">(+216) 29 747 150</span></span>
+<span class="contact-row"><span class="contact-icon" style="display:inline-block;width:72px;color:#a8864b;font-weight:700">FIX</span><span id="v-fix">(+216) 71 900 555</span></span>
+<span class="contact-row"><span class="contact-icon" style="display:inline-block;width:72px;color:#a8864b;font-weight:700">Adresse</span><span id="v-address">4, Rue Ibn Nadim – 1073 Montplaisir, Tunis – Tunisie</span></span>
+<span class="contact-row"><span class="contact-icon" style="display:inline-block;width:72px;color:#a8864b;font-weight:700">Email</span><a id="v-email" href="mailto:resa@businesshoteltunis.com">resa@businesshoteltunis.com</a></span>
+<span class="contact-row"><span class="contact-icon" style="display:inline-block;width:72px;color:#a8864b;font-weight:700">Site web</span><a id="v-website" href="https://www.businesshoteltunis.com/">www.businesshoteltunis.com</a></span>
 </p>
 </div>
 </div>
@@ -108,10 +108,19 @@ function update(){
 }
 ids.forEach(id=>$(id).addEventListener('input',update));
 function getSignatureHTML(){
- const sig=$('signature').cloneNode(true);
- const logo=sig.querySelector('img');
- /* logo is embedded in this standalone page; its data URI remains in copied HTML */
- return sig.outerHTML;
+ const source=$('signature');
+ const logo=source.querySelector('.sig-logo img');
+ const logoSrc=logo ? logo.getAttribute('src') : '';
+ const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+ const name=esc($('v-name').textContent);
+ const role=esc($('v-role').textContent);
+ const greeting=esc($('v-greeting').textContent);
+ const phone=esc($('v-phone').textContent);
+ const email=esc($('v-email').textContent);
+ const address='4, Rue Ibn Nadim – 1073 Montplaisir, Tunis – Tunisie';
+ const website='www.businesshoteltunis.com';
+ const logoCell=logoSrc ? `<td width="165" valign="middle" style="width:165px;padding:5px 18px 5px 0;border-right:2px solid #a8864b;text-align:center;"><img alt="Business Hotels" src="${logoSrc}" width="137" style="display:block;width:137px;height:auto;max-width:137px;border:0;"></td>` : '';
+ return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;font-family:Arial,Helvetica,sans-serif;color:#171717;max-width:680px;width:100%;"><tr>${logoCell}<td valign="middle" style="padding:3px 0 3px 20px;font-family:Arial,Helvetica,sans-serif;"><p style="font-size:13px;line-height:18px;color:#5f5b54;margin:0 0 8px;">${greeting}</p><p style="font-size:20px;line-height:24px;font-weight:bold;margin:0 0 5px;">${name}</p><p style="font-size:11px;line-height:16px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;color:#a8864b;margin:0 0 13px;">${role}</p><p style="font-size:12px;line-height:21px;margin:0;color:#171717;"><span style="color:#a8864b;font-weight:bold;">T&nbsp;&nbsp;</span>${phone}<br><span style="color:#a8864b;font-weight:bold;">@&nbsp;&nbsp;</span><a href="mailto:${esc(email)}" style="color:#7d6337;text-decoration:none;">${email}</a><br><span style="color:#a8864b;font-weight:bold;">FIX&nbsp;</span>(+216) 71 900 555<br><span style="color:#a8864b;font-weight:bold;">A&nbsp;&nbsp;</span>${address}<br><span style="color:#a8864b;font-weight:bold;">W&nbsp;&nbsp;</span><a href="https://www.businesshoteltunis.com/" style="color:#7d6337;text-decoration:none;">${website}</a></p></td></tr><tr><td colspan="2" style="padding-top:15px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;width:100%;"><tr><td style="border-top:1px solid #c9b184;padding-top:10px;text-align:center;font-family:Arial,Helvetica,sans-serif;font-size:9px;line-height:14px;letter-spacing:1px;color:#4e4a43;">BUSINESS HOTEL TUNIS&nbsp;&nbsp; <span style="color:#a8864b;">•</span>&nbsp;&nbsp; BUSINESS HOTEL SFAX&nbsp;&nbsp; <span style="color:#a8864b;">•</span>&nbsp;&nbsp; EDEN CLUB SKANES</td></tr></table></td></tr></table>`;
 }
 $('copyBtn').addEventListener('click',async()=>{
  update();
