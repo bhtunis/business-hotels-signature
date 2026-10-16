@@ -122,26 +122,51 @@ function getSignatureHTML(){
  const logoCell=logoSrc ? `<td width="165" valign="middle" style="width:165px;padding:5px 18px 5px 0;border-right:2px solid #a8864b;text-align:center;"><img alt="Business Hotels" src="${logoSrc}" width="137" style="display:block;width:137px;height:auto;max-width:137px;border:0;"></td>` : '';
  return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;font-family:Arial,Helvetica,sans-serif;color:#171717;max-width:680px;width:100%;"><tr>${logoCell}<td valign="middle" style="padding:3px 0 3px 20px;font-family:Arial,Helvetica,sans-serif;"><p style="font-size:13px;line-height:18px;color:#5f5b54;margin:0 0 8px;">${greeting}</p><p style="font-size:20px;line-height:24px;font-weight:bold;margin:0 0 5px;">${name}</p><p style="font-size:11px;line-height:16px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;color:#a8864b;margin:0 0 13px;">${role}</p><p style="font-size:12px;line-height:21px;margin:0;color:#171717;"><span style="color:#a8864b;font-weight:bold;">T&nbsp;&nbsp;</span>${phone}<br><span style="color:#a8864b;font-weight:bold;">@&nbsp;&nbsp;</span><a href="mailto:${esc(email)}" style="color:#7d6337;text-decoration:none;">${email}</a><br><span style="color:#a8864b;font-weight:bold;">FIX&nbsp;</span>(+216) 71 900 555<br><span style="color:#a8864b;font-weight:bold;">A&nbsp;&nbsp;</span>${address}<br><span style="color:#a8864b;font-weight:bold;">W&nbsp;&nbsp;</span><a href="https://www.businesshoteltunis.com/" style="color:#7d6337;text-decoration:none;">${website}</a></p></td></tr><tr><td colspan="2" style="padding-top:15px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;width:100%;"><tr><td style="border-top:1px solid #c9b184;padding-top:10px;text-align:center;font-family:Arial,Helvetica,sans-serif;font-size:9px;line-height:14px;letter-spacing:1px;color:#4e4a43;">BUSINESS HOTEL TUNIS&nbsp;&nbsp; <span style="color:#a8864b;">•</span>&nbsp;&nbsp; BUSINESS HOTEL SFAX&nbsp;&nbsp; <span style="color:#a8864b;">•</span>&nbsp;&nbsp; EDEN CLUB SKANES</td></tr></table></td></tr></table>`;
 }
+function copyRichHTML(html){
+ return new Promise(async(resolve,reject)=>{
+  try{
+   if(navigator.clipboard && window.ClipboardItem && window.isSecureContext){
+    await navigator.clipboard.write([new ClipboardItem({
+     'text/html':new Blob([html],{type:'text/html'}),
+     'text/plain':new Blob([$('signature').innerText],{type:'text/plain'})
+    })]);
+    resolve('Signature copiée ! Collez avec Ctrl + V dans Outlook, Gmail ou Word.');
+    return;
+   }
+  }catch(err){ /* try the compatibility method below */ }
+  try{
+   const holder=document.createElement('div');
+   holder.contentEditable='true';
+   holder.style.position='fixed';holder.style.left='-10000px';holder.style.top='0';
+   holder.innerHTML=html;
+   document.body.appendChild(holder);
+   const range=document.createRange();range.selectNodeContents(holder);
+   const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);
+   const ok=document.execCommand('copy');
+   selection.removeAllRanges();holder.remove();
+   if(ok) resolve('Signature copiée ! Collez avec Ctrl + V dans Outlook, Gmail ou Word.');
+   else reject(new Error('copy failed'));
+  }catch(err){reject(err);}
+ });
+}
 $('copyBtn').addEventListener('click',async()=>{
  update();
- const html=getSignatureHTML();
- const text=$('signature').innerText;
  try{
-  if(navigator.clipboard && window.ClipboardItem && window.isSecureContext){
-   await navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([text],{type:'text/plain'})})]);
-   $('status').textContent='Signature copiée. Collez-la dans les paramètres de votre messagerie.';
-  }else{
-   const range=document.createRange();range.selectNode($('signature'));const sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);
-   const ok=document.execCommand('copy');sel.removeAllRanges();
-   $('status').textContent=ok?'Signature copiée. Collez-la dans les paramètres de votre messagerie.':'Cliquez sur « Sélectionner », puis faites Ctrl + C.';
-  }
+  $('status').textContent='';
+  $('status').textContent=await copyRichHTML(getSignatureHTML());
  }catch(e){
-  const range=document.createRange();range.selectNode($('signature'));const sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);
-  $('status').textContent='Signature sélectionnée : faites Ctrl + C, puis collez-la dans votre messagerie.';
+  $('status').textContent='La copie automatique est bloquée par le navigateur. Cliquez sur « Sélectionner la signature », puis faites Ctrl + C.';
  }
 });
 $('selectBtn').addEventListener('click',()=>{
- update();const range=document.createRange();range.selectNode($('signature'));const sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);$('status').textContent='Signature sélectionnée. Appuyez sur Ctrl + C pour copier.';
+ update();
+ const holder=document.createElement('div');
+ holder.innerHTML=getSignatureHTML();
+ holder.style.position='fixed';holder.style.left='-10000px';holder.style.top='0';
+ document.body.appendChild(holder);
+ const range=document.createRange();range.selectNodeContents(holder);
+ const sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);
+ $('status').textContent='Signature sélectionnée. Appuyez maintenant sur Ctrl + C, puis collez-la avec Ctrl + V.';
 });
 update();
 </script>
