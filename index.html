@@ -30,7 +30,7 @@ button{border:0;border-radius:7px;padding:11px 13px;font-size:13px;font-weight:7
 .preview-top{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:13px}
 .tag{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#8b6c37;border:1px solid #e7dcc5;border-radius:20px;padding:5px 8px;white-space:nowrap}
 .preview-shell{border:1px solid #ece7de;border-radius:10px;padding:20px;background:#fff;overflow-x:auto}
-.signature{width:100%;max-width:790px;min-width:570px;font-family:Arial,Helvetica,sans-serif;color:#171717;background:#fff}
+.signature{width:100%;max-width:790px;min-width:570px;font-family:Arial,Helvetica,sans-serif;color:#171717;background:#fff;border:1px solid #dedbd4;border-radius:8px;padding:14px;box-sizing:border-box}
 .sig-main{display:flex;align-items:center;gap:0}
 .sig-logo{width:165px;flex:0 0 165px;padding:5px 19px 5px 0;border-right:2px solid #a8864b;display:flex;align-items:center;justify-content:center}
 .sig-logo img{display:block;width:137px;height:auto;max-height:190px;object-fit:contain}
@@ -42,8 +42,10 @@ button{border:0;border-radius:7px;padding:11px 13px;font-size:13px;font-weight:7
 .contact-row{display:block}
 .contact-icon{display:inline-block;width:72px;color:#a8864b;font-weight:700}
 .contact a{color:#7d6337;text-decoration:none}
-.sig-bottom{margin-top:17px;padding-top:10px;border-top:1px solid #c9b184;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;text-align:center;font-size:9px;letter-spacing:1.7px;color:#4e4a43}
-.sig-bottom .dot{color:#a8864b;font-size:13px}
+.sig-bottom{margin-top:17px;padding:0;background:#25252a;border:1px solid #a8864b;border-radius:7px;overflow:hidden;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));text-align:center;color:#fffaf1}
+.sig-bottom span{display:block;padding:14px 7px 12px;font-size:9px;line-height:1.4;font-weight:700;letter-spacing:1.1px;border-top:3px solid #a8864b}
+.sig-bottom span+span{border-left:1px solid #555057}
+.sig-bottom .dot{display:none}
 .legal{margin-top:14px;font-size:11px;color:#858077}
 .status{min-height:18px;font-size:12px;color:#6b542b;margin-top:9px}
 @media(max-width:800px){main{margin-top:18px}.grid{grid-template-columns:1fr}.panel,.preview-card{padding:17px}.preview-shell{padding:12px}}
@@ -87,7 +89,7 @@ button{border:0;border-radius:7px;padding:11px 13px;font-size:13px;font-weight:7
 </p>
 </div>
 </div>
-<div class="sig-bottom"><span>BUSINESS HOTEL TUNIS</span><span class="dot">•</span><span>BUSINESS HOTEL SFAX</span><span class="dot">•</span><span>EDEN CLUB SKANES</span></div>
+<div class="sig-bottom"><span>BUSINESS HOTEL<br>TUNIS</span><span>BUSINESS HOTEL<br>SFAX</span><span>EDEN CLUB<br>SKANES</span></div>
 </div>
 </div>
 
@@ -120,7 +122,8 @@ function getSignatureHTML(){
  const address='4, Rue Ibn Nadim – 1073 Montplaisir, Tunis – Tunisie';
  const website='www.businesshoteltunis.com';
  const logoCell=logoSrc ? `<td width="165" valign="middle" style="width:165px;padding:5px 18px 5px 0;border-right:2px solid #a8864b;text-align:center;"><img alt="Business Hotels" src="${logoSrc}" width="137" style="display:block;width:137px;height:auto;max-width:137px;border:0;"></td>` : '';
- return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;font-family:Arial,Helvetica,sans-serif;color:#171717;max-width:680px;width:100%;"><tr>${logoCell}<td valign="middle" style="padding:3px 0 3px 20px;font-family:Arial,Helvetica,sans-serif;"><p style="font-size:13px;line-height:18px;color:#5f5b54;margin:0 0 8px;">${greeting}</p><p style="font-size:20px;line-height:24px;font-weight:bold;margin:0 0 5px;">${name}</p><p style="font-size:11px;line-height:16px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;color:#a8864b;margin:0 0 13px;">${role}</p><p style="font-size:12px;line-height:21px;margin:0;color:#171717;"><span style="color:#a8864b;font-weight:bold;">T&nbsp;&nbsp;</span>${phone}<br><span style="color:#a8864b;font-weight:bold;">@&nbsp;&nbsp;</span><a href="mailto:${esc(email)}" style="color:#7d6337;text-decoration:none;">${email}</a><br><span style="color:#a8864b;font-weight:bold;">FIX&nbsp;</span>(+216) 71 900 555<br><span style="color:#a8864b;font-weight:bold;">A&nbsp;&nbsp;</span>${address}<br><span style="color:#a8864b;font-weight:bold;">W&nbsp;&nbsp;</span><a href="https://www.businesshoteltunis.com/" style="color:#7d6337;text-decoration:none;">${website}</a></p></td></tr><tr><td colspan="2" style="padding-top:15px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;width:100%;"><tr><td style="border-top:1px solid #c9b184;padding-top:10px;text-align:center;font-family:Arial,Helvetica,sans-serif;font-size:9px;line-height:14px;letter-spacing:1px;color:#4e4a43;">BUSINESS HOTEL TUNIS&nbsp;&nbsp; <span style="color:#a8864b;">•</span>&nbsp;&nbsp; BUSINESS HOTEL SFAX&nbsp;&nbsp; <span style="color:#a8864b;">•</span>&nbsp;&nbsp; EDEN CLUB SKANES</td></tr></table></td></tr></table>`;
+ const inner = `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;font-family:Arial,Helvetica,sans-serif;color:#171717;max-width:680px;width:100%;"><tr>${logoCell}<td valign="middle" style="padding:3px 0 3px 20px;font-family:Arial,Helvetica,sans-serif;"><p style="font-size:13px;line-height:18px;color:#5f5b54;margin:0 0 8px;">${greeting}</p><p style="font-size:20px;line-height:24px;font-weight:bold;margin:0 0 5px;">${name}</p><p style="font-size:11px;line-height:16px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;color:#a8864b;margin:0 0 13px;">${role}</p><p style="font-size:12px;line-height:21px;margin:0;color:#171717;"><span style="color:#a8864b;font-weight:bold;">T&nbsp;&nbsp;</span>${phone}<br><span style="color:#a8864b;font-weight:bold;">@&nbsp;&nbsp;</span><a href="mailto:${esc(email)}" style="color:#7d6337;text-decoration:none;">${email}</a><br><span style="color:#a8864b;font-weight:bold;">FIX&nbsp;</span>(+216) 71 900 555<br><span style="color:#a8864b;font-weight:bold;">A&nbsp;&nbsp;</span>${address}<br><span style="color:#a8864b;font-weight:bold;">W&nbsp;&nbsp;</span><a href="https://www.businesshoteltunis.com/" style="color:#7d6337;text-decoration:none;">${website}</a></p></td></tr><tr><td colspan="2" style="padding-top:15px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:separate;border-spacing:0;width:100%;border:1px solid #a8864b;border-radius:6px;background-color:#25252a;overflow:hidden;"><tr><td width="33.33%" style="border-top:3px solid #a8864b;padding:12px 6px 11px;text-align:center;font-family:Arial,Helvetica,sans-serif;font-size:9px;line-height:14px;font-weight:bold;letter-spacing:1px;color:#fffaf1;">BUSINESS HOTEL<br>TUNIS</td><td width="33.33%" style="border-top:3px solid #a8864b;border-left:1px solid #555057;padding:12px 6px 11px;text-align:center;font-family:Arial,Helvetica,sans-serif;font-size:9px;line-height:14px;font-weight:bold;letter-spacing:1px;color:#fffaf1;">BUSINESS HOTEL<br>SFAX</td><td width="33.33%" style="border-top:3px solid #a8864b;border-left:1px solid #555057;padding:12px 6px 11px;text-align:center;font-family:Arial,Helvetica,sans-serif;font-size:9px;line-height:14px;font-weight:bold;letter-spacing:1px;color:#fffaf1;">EDEN CLUB<br>SKANES</td></tr></table></td></tr></table>`;
+ return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:separate;border-spacing:0;width:100%;max-width:710px;border:1px solid #dedbd4;border-radius:8px;background-color:#ffffff;"><tr><td style="padding:12px;background-color:#ffffff;border-radius:8px;">${inner}</td></tr></table>`;
 }
 function copyRichHTML(html){
  return new Promise(async(resolve,reject)=>{
