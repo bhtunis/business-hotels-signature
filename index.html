@@ -110,9 +110,6 @@ function update(){
 }
 ids.forEach(id=>$(id).addEventListener('input',update));
 function getSignatureHTML(){
- const source=$('signature');
- const logo=source.querySelector('.sig-logo img');
- const logoSrc=logo ? logo.getAttribute('src') : '';
  const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
  const name=esc($('v-name').textContent);
  const role=esc($('v-role').textContent);
@@ -121,9 +118,36 @@ function getSignatureHTML(){
  const email=esc($('v-email').textContent);
  const address='4, Rue Ibn Nadim – 1073 Montplaisir, Tunis – Tunisie';
  const website='www.businesshoteltunis.com';
- const logoCell=logoSrc ? `<td width="165" valign="middle" style="width:165px;padding:5px 18px 5px 0;border-right:2px solid #a8864b;text-align:center;"><img alt="Business Hotels" src="${logoSrc}" width="137" style="display:block;width:137px;height:auto;max-width:137px;border:0;"></td>` : '';
- const inner = `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;font-family:Arial,Helvetica,sans-serif;color:#171717;max-width:680px;width:100%;"><tr>${logoCell}<td valign="middle" style="padding:3px 0 3px 20px;font-family:Arial,Helvetica,sans-serif;"><p style="font-size:13px;line-height:18px;color:#5f5b54;margin:0 0 8px;">${greeting}</p><p style="font-size:20px;line-height:24px;font-weight:bold;margin:0 0 5px;">${name}</p><p style="font-size:11px;line-height:16px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;color:#a8864b;margin:0 0 13px;">${role}</p><p style="font-size:12px;line-height:21px;margin:0;color:#171717;"><span style="color:#a8864b;font-weight:bold;">T&nbsp;&nbsp;</span>${phone}<br><span style="color:#a8864b;font-weight:bold;">@&nbsp;&nbsp;</span><a href="mailto:${esc(email)}" style="color:#7d6337;text-decoration:none;">${email}</a><br><span style="color:#a8864b;font-weight:bold;">FIX&nbsp;</span>(+216) 71 900 555<br><span style="color:#a8864b;font-weight:bold;">A&nbsp;&nbsp;</span>${address}<br><span style="color:#a8864b;font-weight:bold;">W&nbsp;&nbsp;</span><a href="https://www.businesshoteltunis.com/" style="color:#7d6337;text-decoration:none;">${website}</a></p></td></tr><tr><td colspan="2" style="padding-top:15px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:separate;border-spacing:0;width:100%;border:1px solid #a8864b;border-radius:6px;background-color:#25252a;overflow:hidden;"><tr><td width="33.33%" style="border-top:3px solid #a8864b;padding:12px 6px 11px;text-align:center;font-family:Arial,Helvetica,sans-serif;font-size:9px;line-height:14px;font-weight:bold;letter-spacing:1px;color:#fffaf1;">BUSINESS HOTEL<br>TUNIS</td><td width="33.33%" style="border-top:3px solid #a8864b;border-left:1px solid #555057;padding:12px 6px 11px;text-align:center;font-family:Arial,Helvetica,sans-serif;font-size:9px;line-height:14px;font-weight:bold;letter-spacing:1px;color:#fffaf1;">BUSINESS HOTEL<br>SFAX</td><td width="33.33%" style="border-top:3px solid #a8864b;border-left:1px solid #555057;padding:12px 6px 11px;text-align:center;font-family:Arial,Helvetica,sans-serif;font-size:9px;line-height:14px;font-weight:bold;letter-spacing:1px;color:#fffaf1;">EDEN CLUB<br>SKANES</td></tr></table></td></tr></table>`;
- return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:separate;border-spacing:0;width:100%;max-width:710px;border:1px solid #dedbd4;border-radius:8px;background-color:#ffffff;"><tr><td style="padding:12px;background-color:#ffffff;border-radius:8px;">${inner}</td></tr></table>`;
+ /* IMPORTANT: logo.png must be uploaded to the GitHub Pages repository beside index.html. */
+ const logoSrc='https://bhtunis.github.io/business-hotels-signature/logo.png';
+ return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="width:600px;border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;font-family:Arial,Helvetica,sans-serif;color:#171717;background-color:#ffffff;">
+ <tr>
+  <td width="118" valign="middle" style="width:118px;padding:6px 12px 6px 2px;border-right:1px solid #a8864b;text-align:center;vertical-align:middle;">
+   <img src="${logoSrc}" alt="Business Hotels" width="92" height="140" style="display:block;width:92px;height:140px;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;">
+  </td>
+  <td width="482" valign="middle" style="width:482px;padding:8px 0 8px 16px;vertical-align:middle;font-family:Arial,Helvetica,sans-serif;">
+   <p style="font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:16px;color:#5f5b54;margin:0 0 6px 0;padding:0;">${greeting}</p>
+   <p style="font-family:Arial,Helvetica,sans-serif;font-size:18px;line-height:22px;font-weight:bold;margin:0 0 3px 0;padding:0;color:#171717;">${name}</p>
+   <p style="font-family:Arial,Helvetica,sans-serif;font-size:10px;line-height:14px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;color:#a8864b;margin:0 0 9px 0;padding:0;">${role}</p>
+   <p style="font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:17px;margin:0;padding:0;color:#171717;">
+    <span style="color:#a8864b;font-weight:bold;">T&nbsp;&nbsp;</span>${phone}<br>
+    <span style="color:#a8864b;font-weight:bold;">@&nbsp;&nbsp;</span><a href="mailto:${email}" style="color:#7d6337;text-decoration:underline;">${email}</a><br>
+    <span style="color:#a8864b;font-weight:bold;">FIX&nbsp;</span>(+216) 71 900 555<br>
+    <span style="color:#a8864b;font-weight:bold;">A&nbsp;&nbsp;</span>${address}<br>
+    <span style="color:#a8864b;font-weight:bold;">W&nbsp;&nbsp;</span><a href="https://www.businesshoteltunis.com/" style="color:#7d6337;text-decoration:underline;">${website}</a>
+   </p>
+  </td>
+ </tr>
+ <tr><td colspan="2" style="padding-top:10px;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="width:600px;border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;background-color:#25252a;">
+   <tr>
+    <td width="200" bgcolor="#25252a" style="width:200px;border-top:3px solid #a8864b;padding:9px 3px;text-align:center;font-family:Arial,Helvetica,sans-serif;font-size:9px;line-height:13px;font-weight:bold;letter-spacing:1px;color:#fffaf1;">BUSINESS HOTEL<br>TUNIS</td>
+    <td width="200" bgcolor="#25252a" style="width:200px;border-top:3px solid #a8864b;border-left:1px solid #555057;padding:9px 3px;text-align:center;font-family:Arial,Helvetica,sans-serif;font-size:9px;line-height:13px;font-weight:bold;letter-spacing:1px;color:#fffaf1;">BUSINESS HOTEL<br>SFAX</td>
+    <td width="200" bgcolor="#25252a" style="width:200px;border-top:3px solid #a8864b;border-left:1px solid #555057;padding:9px 3px;text-align:center;font-family:Arial,Helvetica,sans-serif;font-size:9px;line-height:13px;font-weight:bold;letter-spacing:1px;color:#fffaf1;">EDEN CLUB<br>SKANES</td>
+   </tr>
+  </table>
+ </td></tr>
+ </table>`;
 }
 function copyRichHTML(html){
  return new Promise(async(resolve,reject)=>{
@@ -133,7 +157,7 @@ function copyRichHTML(html){
      'text/html':new Blob([html],{type:'text/html'}),
      'text/plain':new Blob([$('signature').innerText],{type:'text/plain'})
     })]);
-    resolve('Signature copiée ! Collez avec Ctrl + V dans Outlook, Gmail ou Word.');
+    resolve('Signature copiée ! Collez avec Ctrl + V dans Outlook. Le fichier logo.png doit être publié à côté de index.html sur GitHub Pages.');
     return;
    }
   }catch(err){ /* try the compatibility method below */ }
@@ -147,7 +171,7 @@ function copyRichHTML(html){
    const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);
    const ok=document.execCommand('copy');
    selection.removeAllRanges();holder.remove();
-   if(ok) resolve('Signature copiée ! Collez avec Ctrl + V dans Outlook, Gmail ou Word.');
+   if(ok) resolve('Signature copiée ! Collez avec Ctrl + V dans Outlook. Le fichier logo.png doit être publié à côté de index.html sur GitHub Pages.');
    else reject(new Error('copy failed'));
   }catch(err){reject(err);}
  });
